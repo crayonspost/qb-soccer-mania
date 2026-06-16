@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGame } from "@/game/store";
 import { CountrySelect } from "@/components/game/CountrySelect";
 import { Shell, type Screen } from "@/components/game/Shell";
@@ -28,7 +28,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   const country = useGame(s => s.country);
   const [screen, setScreen] = useState<Screen>("home");
-
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => { setHydrated(true); }, []);
+  if (!hydrated) return <div className="min-h-screen bg-background" />;
   if (!country) return <CountrySelect />;
 
   return (
