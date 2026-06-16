@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>足球大亂鬥</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        iframe { width: 100%; height: 100vh; border: none; }
+        #sound-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 9999;
+            padding: 10px 15px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <button id="sound-toggle">🔊 音效開</button>
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+    <iframe src="https://qb-soccer-mania.lovable.app/"></iframe>
+
+    <script>
+        const btn = document.getElementById('sound-toggle');
+        const audio = document.getElementById('bg-music');
+        let isMuted = false;
+
+        btn.addEventListener('click', () => {
+            if (isMuted) {
+                audio.play();
+                btn.textContent = '🔊 音效開';
+                isMuted = false;
+            } else {
+                audio.pause();
+                btn.textContent = '🔇 音效關';
+                isMuted = true;
+            }
+        });
+    </script>
+</body>
+</html>
