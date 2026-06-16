@@ -1,29 +1,48 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { useGame } from "@/game/store";
+import { CountrySelect } from "@/components/game/CountrySelect";
+import { Shell, type Screen } from "@/components/game/Shell";
+import { HomeScreen } from "@/components/game/screens/HomeScreen";
+import { GachaScreen } from "@/components/game/screens/GachaScreen";
+import { InventoryScreen } from "@/components/game/screens/InventoryScreen";
+import { SynthesisScreen } from "@/components/game/screens/SynthesisScreen";
+import { LineupScreen } from "@/components/game/screens/LineupScreen";
+import { ScheduleScreen } from "@/components/game/screens/ScheduleScreen";
+import { LeaderboardScreen } from "@/components/game/screens/LeaderboardScreen";
+import { SavesScreen } from "@/components/game/screens/SavesScreen";
+import { SettingsScreen } from "@/components/game/screens/SettingsScreen";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "足球大亂鬥 · Q版11人卡牌足球" },
+      { name: "description", content: "Q版11人足球放置卡牌網頁遊戲，抽卡、生星、20種陣型、世界盃500場、完全前端可離線存檔。" },
+      { property: "og:title", content: "足球大亂鬥 · Q版卡牌足球" },
+      { property: "og:description", content: "選國家、組陣型、模擬比賽，純前端 localStorage 存檔。" },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const country = useGame(s => s.country);
+  const [screen, setScreen] = useState<Screen>("home");
+
+  if (!country) return <CountrySelect />;
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <Shell screen={screen} setScreen={setScreen}>
+      {screen === "home" && <HomeScreen go={setScreen} />}
+      {screen === "gacha" && <GachaScreen />}
+      {screen === "inventory" && <InventoryScreen />}
+      {screen === "synthesis" && <SynthesisScreen />}
+      {screen === "lineup" && <LineupScreen />}
+      {screen === "schedule" && <ScheduleScreen />}
+      {screen === "worldcup" && <ScheduleScreen worldcup />}
+      {screen === "leaderboard" && <LeaderboardScreen />}
+      {screen === "saves" && <SavesScreen />}
+      {screen === "settings" && <SettingsScreen />}
+    </Shell>
   );
 }
